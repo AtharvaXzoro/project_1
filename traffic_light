@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Traffic Light</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #222;
+      height: 100vh;
+      color: white;
+      font-family: Arial;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+    }
+
+    .timer {
+      font-size: 24px;
+      margin-right: 20px;
+      width: 60px;
+      text-align: right;
+    }
+
+    .traffic-light {
+      width: 100px;
+      background-color: #333;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .light {
+      width: 60px;
+      height: 60px;
+      margin: 15px auto;
+      border-radius: 50%;
+      background-color: #111;
+      transition: background-color 0.3s;
+    }
+
+    .red.active {
+      background-color: red;
+    }
+
+    .yellow.active {
+      background-color: yellow;
+    }
+
+    .green.active {
+      background-color: green;
+    }
+
+    .buttons {
+      margin-top: 30px;
+    }
+
+    button {
+      margin: 0 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="timer" id="timer">10s</div>
+
+    <div class="traffic-light">
+      <div class="light red" id="red"></div>
+      <div class="light yellow" id="yellow"></div>
+      <div class="light green" id="green"></div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="switchLight('red')">Red</button>
+    <button onclick="switchLight('yellow')">Yellow</button>
+    <button onclick="switchLight('green')">Green</button>
+  </div>
+
+  <script>
+    let timer = 10;
+    let intervalId = null;
+
+    const lights = {
+      red: document.getElementById('red'),
+      yellow: document.getElementById('yellow'),
+      green: document.getElementById('green')
+    };
+
+    const timerDisplay = document.getElementById('timer');
+
+    function switchLight(color) {
+      for (let key in lights) {
+        lights[key].classList.remove('active');
+      }
+      lights[color].classList.add('active');
+
+      timer = 10;
+      updateTimerDisplay();
+
+      clearInterval(intervalId);
+      intervalId = setInterval(() => {
+        timer--;
+        updateTimerDisplay();
+
+        if (timer < 0) {
+          clearInterval(intervalId);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      timerDisplay.textContent = `${Math.max(timer, 0)}s`;
+    }
+    switchLight('red');
+  </script>
+</body>
+</html>
